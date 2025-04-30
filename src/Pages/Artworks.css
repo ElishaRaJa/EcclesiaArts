@@ -1,0 +1,413 @@
+.artworks-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.artworks__title {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  margin-bottom: 1.5rem;
+}
+
+.artworks__create-btn {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 2rem;
+}
+
+.artworks__create-btn:hover {
+  background-color: var(--primary-light);
+}
+
+.artworks__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.artwork-card {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.artwork-card--sold {
+  position: relative;
+}
+
+.artwork-card__sold-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--error);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.artwork-card:hover {
+  transform: translateY(-5px);
+}
+
+.artwork-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.artwork-card__content {
+  padding: 1.5rem;
+}
+
+.artwork-card__title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.artwork-card__price {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.artwork-card__status-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+  gap: 1rem;
+}
+
+.artwork-card__status {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.artwork-card__status--available {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.artwork-card__status--sold {
+  background-color: var(--gold);
+  color: var(--primary-dark);
+  text-decoration: line-through;
+}
+
+.artwork-card__btn--details {
+  flex-shrink: 0;
+  width: 120px;
+}
+
+.artwork-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.artwork-card__user-actions,
+.artwork-card__admin-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.artwork-card__user-actions {
+  width: 100%;
+}
+
+.artwork-card__user-actions,
+.artwork-card__admin-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.artwork-card__user-actions {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.artwork-card__admin-actions {
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.artwork-card__btn {
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.artwork-card__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.artwork-card__btn--details {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.artwork-card__btn--details:hover {
+  background-color: var(--primary-light);
+}
+
+.artwork-card__btn--edit {
+  background-color: var(--gold);
+  color: var(--primary-dark);
+}
+
+.artwork-card__btn--edit:hover {
+  background-color: var(--gold-light);
+}
+
+.artwork-card__btn--delete {
+  background-color: var(--error);
+  color: var(--white);
+}
+
+.artwork-card__btn--delete:hover {
+  background-color: #d32f2f;
+}
+
+.artwork-detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.artwork-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.artwork-detail__back-btn {
+  color: var(--white);
+  background-color: var(--primary-dark);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.artwork-detail__back-btn:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.artwork-detail__title {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.artwork-detail__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.artwork-detail__image {
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+}
+
+.artwork-detail__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.artwork-detail__description {
+  line-height: 1.6;
+}
+
+.artwork-detail__dimensions,
+.artwork-detail__shipping,
+.artwork-detail__delivery,
+.artwork-detail__categories,
+.artwork-detail__regions {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.artwork-detail__dimensions::before,
+.artwork-detail__shipping::before,
+.artwork-detail__delivery::before,
+.artwork-detail__categories::before,
+.artwork-detail__regions::before {
+  content: "• ";
+  color: var(--primary-dark);
+  font-weight: bold;
+}
+
+.artwork-detail__price {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.artwork-detail__purchase-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.artwork-detail__status {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.artwork-detail__purchase-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.artwork-detail__purchase-btn {
+  background-color: var(--success);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.artwork-detail__purchase-btn:hover {
+  background-color: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.artwork-detail__purchase-btn:disabled {
+  background-color: var(--gray);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.artwork-detail__status--available {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.artwork-detail__status--sold {
+  background-color: var(--gold);
+  color: var(--primary-dark);
+  font-weight: bold;
+}
+
+.artwork-detail__admin-actions {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  justify-content: flex-end;
+}
+
+.artwork-detail__btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.3s;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.artwork-detail__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.artwork-detail__spacer {
+  height: 1rem;
+  margin-top: 1rem;
+}
+
+.artwork-detail__btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.artwork-detail__btn--edit {
+  background-color: var(--gold);
+  color: var(--primary-dark);
+}
+
+.artwork-detail__btn--edit:hover {
+  background-color: var(--gold-light);
+}
+
+.artwork-detail__btn--delete {
+  background-color: var(--error);
+  color: var(--white);
+}
+
+.artwork-detail__btn--delete:hover {
+  background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .artworks__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .artwork-card__actions {
+    flex-direction: column;
+  }
+  
+  .artwork-card__btn {
+    width: 100%;
+  }
+
+  .artwork-detail__content {
+    grid-template-columns: 1fr;
+  }
+}

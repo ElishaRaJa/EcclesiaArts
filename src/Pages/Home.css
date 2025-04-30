@@ -1,0 +1,211 @@
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Hero Section */
+.hero {
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('steve.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  margin-bottom: 3rem;
+}
+
+.hero-content {
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  background-color: var(--primary-dark);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: var(--primary-light);
+}
+
+/* Featured Artworks */
+.featured-artworks {
+  margin-bottom: 4rem;
+}
+
+.featured-artworks h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--primary-dark);
+}
+
+.artworks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.artwork-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.artwork-card:hover {
+  transform: translateY(-5px);
+}
+
+.artwork-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.artwork-card h3 {
+  padding: 1rem 1rem 0;
+  font-size: 1.2rem;
+}
+
+.artwork-card p {
+  padding: 0 1rem;
+  font-weight: bold;
+}
+
+.view-button {
+  display: block;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--gold);
+  color: var(--primary-dark);
+  text-align: center;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+/* Artist Bio */
+.artist-bio {
+  margin-bottom: 4rem;
+}
+
+.bio-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.bio-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bio-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-dark);
+}
+
+.bio-text p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.bio-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary-dark);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid var(--gold);
+}
+
+/* Testimonials */
+.testimonials {
+  margin-bottom: 4rem;
+}
+
+.testimonials h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--primary-dark);
+}
+
+.testimonial-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.testimonial-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+}
+
+.testimonial-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.testimonial-card p {
+  font-style: italic;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  .bio-content {
+    grid-template-columns: 1fr;
+  }
+
+  .bio-image {
+    order: -1;
+  }
+}

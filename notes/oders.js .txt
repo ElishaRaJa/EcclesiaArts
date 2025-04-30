@@ -1,0 +1,144 @@
+```javascript
+// order.js (Firebase Functions)
+
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin SDK if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp();
+}
+
+exports.createOrder = functions.https.onCall(async (data, context) => {
+  // Check if user is authenticated
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      'unauthenticated',
+      'User must be authenticated to create an order.'
+    );
+  }
+
+  const userId = context.auth.uid;
+
+  // Validate input data
+  const {
+    artworkId,
+    shippingAddress,
+    billingAddress,
+    shippingOption,
+    totalPrice,
+    quantity,
+  } = data;
+
+  if (
+    !artworkId ||
+    !shippingAddress ||
+    !billingAddress ||
+    !shippingOption ||
+    !totalPrice ||
+    !quantity
+  ) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'Missing required order information.'
+    );
+  }
+
+  try {
+    // Get user document to get the user name.
+    const userDoc = await admin.firestore().collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'User not found');
+    }
+    const userData = userDoc.data();
+    const userName = userData.name;
+
+    // Create order document in Firestore
+    const orderRef = await admin.firestore().collection('orders').add({
+      userId: userId,
+      userName: userName,
+      artworkId: artworkId,
+      shippingAddress: shippingAddress,
+      billingAddress: billingAddress,
+      shippingOption: shippingOption,
+      totalPrice: totalPrice,
+      quantity: quantity,
+      orderDate: admin.firestore.FieldValue.serverTimestamp(),
+      orderStatus: 'Pending', // Initial order status
+      trackingNumber: null, // Add tracking number later
+    });
+
+    const orderId = orderRef.id;
+
+    // Return the order ID to the client
+    return { orderId: orderId };
+  } catch (error) {
+    console.error('Error creating order:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
+exports.updateOrderStatus = functions.https.onCall(async (data, context) => {
+  // Check if user is authenticated and is an admin (optional)
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      'unauthenticated',
+      'User must be authenticated to update order status.'
+    );
+  }
+
+  //Add admin check here, if required.
+
+  const { orderId, orderStatus, trackingNumber } = data;
+
+  if (!orderId || !orderStatus) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'Missing required order information.'
+    );
+  }
+
+  try {
+    // Update order status in Firestore
+    await admin.firestore().collection('orders').doc(orderId).update({
+      orderStatus: orderStatus,
+      trackingNumber: trackingNumber || null,
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    throw new functions.https.HttpsError('internal', error.message);
+  }
+});
+
+// Add more order-related functions as needed (e.g., getOrder, getOrdersByUser)
+```
+
+**Explanation:**
+
+1.  **`createOrder` Function:**
+    * This function is triggered when a user submits an order from your React frontend.
+    * It verifies user authentication.
+    * It validates the input data (artwork ID, shipping address, etc.).
+    * It retrieves the user name from the users doc.
+    * It creates a new order document in the `orders` collection in Firestore.
+    * It sets the initial order status to "Pending."
+    * It returns the generated order ID to the client.
+2.  **`updateOrderStatus` Function:**
+    * This function is used to update the order status (e.g., "Processing," "Shipped," "Delivered").
+    * It verifies user authentication (and optionally admin privileges).
+    * It updates the `orderStatus` and `trackingNumber` fields in the order document.
+    * It returns a success message to the client.
+3.  **Error Handling:**
+    * Both functions include error handling to catch and report errors.
+    * They use `functions.https.HttpsError` to send appropriate error messages to the client.
+4.  **Modularization:**
+    * This code is modularized into a separate `order.js` file, making it easy to manage and maintain.
+5.  **Important Considerations:**
+    * Ensure that you have Firebase admin SDK installed.
+    * You will need to deploy these functions to firebase functions.
+    * You will need to call these functions from your react application.
+    * Add more functions as your needs grow.
+    * Add security rules to your firebase database.
+    * Add validation to your react application, to ensure data is correct before being sent to the firebase functions.

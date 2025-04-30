@@ -1,0 +1,141 @@
+html {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /*margin-bottom: 60px;*/
+  /*background: blue;*/
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Primary Background (e.g., Navbar, Footer) */
+.navbar, .footer {
+    background-color: #0a2e4e; /* Dark navy */
+    color: white;
+}
+
+/* Accent Elements (Borders, Icons) */
+.btn-primary, .btn-outline-primary, .navbar-brand {
+    color: #c9a759; /* Gold */
+    border-color: #c9a759;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+    background-color: #c9a759; /* Gold on hover */
+    color: white;
+}
+
+/* Main Text Color */
+body, h1, h2, h3, h4, h5, h6, p {
+    color: #333333; /* Dark grey for readability */
+}
+
+/* Background for Content Sections */
+.content-section {
+    background-color: #ffffff; /* White background for readability */
+    color: #0a2e4e; /* Dark navy for text */
+}
+
+/* Specific Elements */
+h1, .section-title {
+    font-size: 2rem;
+    color: #0a2e4e;
+}
+
+a {
+    color: #c9a759;
+}
+a:hover {
+    color: #f0c040; /* Slightly lighter gold */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------*/
+/* Primary Background (e.g., Navbar, Footer) */
+.navbar, .footer {
+    background-color: #0a2e4e; /* Dark navy */
+    color: white;
+}
+
+/* Accent Elements (Borders, Icons) */
+.btn-primary, .btn-outline-primary, .navbar-brand {
+    color: #c9a759; /* Gold */
+    border-color: #c9a759;
+}
+
+    .btn-primary:hover, .btn-outline-primary:hover {
+        background-color: #c9a759; /* Gold on hover */
+        color: white;
+    }
+
+/* Main Text Color */
+body, h1, h2, h3, h4, h5, h6, p {
+    color: #333333; /* Dark grey for readability */
+}
+
+/* Background for Content Sections */
+.content-section {
+    background-color: #ffffff; /* White background for readability */
+    color: #0a2e4e; /* Dark navy for text */
+}
+
+/* Specific Elements */
+h1, .section-title {
+    font-size: 2rem;
+    color: #0a2e4e;
+}
+
+a {
+    color: #c9a759;
+}
+
+    a:hover {
+        color: #f0c040; /* Slightly lighter gold */
+    }
+
+
+:root {
+    --primary-color: #0a2e4e;
+    --accent-color: #c9a759;
+    --text-color: #333333;
+    --bg-color: #ffffff;
+}
+
+.navbar {
+    background-color: var(--primary-color);
+}
+
+.btn-primary {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+

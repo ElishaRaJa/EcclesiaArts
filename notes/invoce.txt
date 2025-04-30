@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header, .invoice-details {
+            margin-bottom: 20px;
+        }
+        .invoice-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .invoice-header p {
+            font-size: 14px;
+            color: #555;
+        }
+        .invoice-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-details table th, .invoice-details table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 16px;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .invoice-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-container">
+    <!-- Invoice Header -->
+    <div class="invoice-header">
+        <h1>Invoice</h1>
+        <p><strong>Invoice Number:</strong> #12345</p>
+        <p><strong>Issue Date:</strong> March 27, 2025</p>
+    </div>
+
+    <!-- Customer Details -->
+    <div class="invoice-details">
+        <h3>Customer Information</h3>
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Email:</strong> john.doe@example.com</p>
+        <p><strong>Shipping Address:</strong> 123 Main St, City, Country</p>
+    </div>
+
+    <!-- Products List -->
+    <div class="invoice-details">
+        <h3>Order Details</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>Original Artwork #001</td>
+                <td>1</td>
+                <td>$500.00</td>
+                <td>$500.00</td>
+            </tr>
+            <tr>
+                <td>Shipping</td>
+                <td>1</td>
+                <td>$30.00</td>
+                <td>$30.00</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$530.00</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="invoice-footer">
+        <p>Thank you for your purchase! If you have any questions, feel free to contact us.</p>
+    </div>
+</div>
+
+</body>
+</html>
+To create and generate invoices on your website, there are a few ways to handle it depending on the platform you're using (custom site, Shopify, WooCommerce, etc.). Below is a **simple guide** for creating an invoice and sending it to customers using your **website** (HTML/CSS/JavaScript):
+
+---
+
+### **Step 1: Basic Invoice Layout (HTML/CSS)**
+
+You can create a basic **invoice template** directly in HTML and CSS that will display order details such as customer information, products, and prices. Here’s an example of what it might look like:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header, .invoice-details {
+            margin-bottom: 20px;
+        }
+        .invoice-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .invoice-header p {
+            font-size: 14px;
+            color: #555;
+        }
+        .invoice-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-details table th, .invoice-details table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 16px;
+            text-align: right;
+            margin-top: 20px;
+        }
+        .invoice-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-container">
+    <!-- Invoice Header -->
+    <div class="invoice-header">
+        <h1>Invoice</h1>
+        <p><strong>Invoice Number:</strong> #12345</p>
+        <p><strong>Issue Date:</strong> March 27, 2025</p>
+    </div>
+
+    <!-- Customer Details -->
+    <div class="invoice-details">
+        <h3>Customer Information</h3>
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Email:</strong> john.doe@example.com</p>
+        <p><strong>Shipping Address:</strong> 123 Main St, City, Country</p>
+    </div>
+
+    <!-- Products List -->
+    <div class="invoice-details">
+        <h3>Order Details</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>Original Artwork #001</td>
+                <td>1</td>
+                <td>$500.00</td>
+                <td>$500.00</td>
+            </tr>
+            <tr>
+                <td>Shipping</td>
+                <td>1</td>
+                <td>$30.00</td>
+                <td>$30.00</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$530.00</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="invoice-footer">
+        <p>Thank you for your purchase! If you have any questions, feel free to contact us.</p>
+    </div>
+</div>
+
+</body>
+</html>
+```
+
+---
+
+### **Step 2: Adding Invoice Data with JavaScript**
+
+To create an invoice automatically when a customer places an order, you can **use JavaScript** to dynamically add the customer and order details. Here's an example of how you might do this:
+
+```html
+<script>
+    function generateInvoice() {
+        const invoiceNumber = '12345'; // Replace with dynamic value
+        const customerName = 'John Doe'; // Replace with dynamic value
+        const customerEmail = 'john.doe@example.com'; // Replace with dynamic value
+        const customerAddress = '123 Main St, City, Country'; // Replace with dynamic value
+        const productDetails = [
+            { name: 'Original Artwork #001', quantity: 1, price: 500.00 },
+            { name: 'Shipping', quantity: 1, price: 30.00 }
+        ];
+
+        let totalAmount = 0;
+        let productRows = '';
+        productDetails.forEach(product => {
+            const productTotal = product.quantity * product.price;
+            totalAmount += productTotal;
+            productRows += `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>$${productTotal.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        document.querySelector('.invoice-header').innerHTML = `
+            <h1>Invoice</h1>
+            <p><strong>Invoice Number:</strong> #${invoiceNumber}</p>
+            <p><strong>Issue Date:</strong> ${new Date().toLocaleDateString()}</p>
+        `;
+        document.querySelector('.invoice-details').innerHTML = `
+            <h3>Customer Information</h3>
+            <p><strong>Name:</strong> ${customerName}</p>
+            <p><strong>Email:</strong> ${customerEmail}</p>
+            <p><strong>Shipping Address:</strong> ${customerAddress}</p>
+        `;
+        document.querySelector('.invoice-details table').innerHTML = `
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+            ${productRows}
+            <tr>
+                <td><strong>Total</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$${totalAmount.toFixed(2)}</strong></td>
+            </tr>
+        `;
+    }
+
+    window.onload = generateInvoice;
+</script>
+```
+
+---
+
+### **Step 3: Generating and Sending the Invoice**
+
+To **send the invoice** to the customer automatically, you can:
+
+1. **Email the Invoice as a PDF:**
+   - Use a tool like **jsPDF** (a JavaScript library) to convert the HTML invoice into a downloadable PDF.
+   - Send the invoice as an email attachment using **Node.js**, **PHP**, or your server-side backend.
+
+2. **Provide a Downloadable Link:**
+   - After generating the invoice on the webpage, allow the customer to **download the invoice as a PDF**.
+   - Example:
+     ```html
+     <button onclick="window.print()">Download Invoice</button>
+     ```
+   - Or use **jsPDF** to create a downloadable PDF file directly.
+
+---
+
+### **Step 4: Integrating with Your Payment System**
+
+Once an order is confirmed and paid, **trigger the invoice generation process** in your backend. This could include:
+
+- Using **payment gateways** (PayPal, Stripe, etc.) to notify your server when a payment is made.
+- Using backend programming (e.g., Node.js, Python, PHP) to dynamically create and send the invoice.
+
+---
+
+### **💡 Conclusion:**
+This setup will allow you to:
+- **Generate custom invoices** for every customer.
+- **Email invoices** or provide downloadable versions.
+- **Track sales and orders** efficiently.
+
+Let me know if you need help with **backend integration** or **PDF generation**! 😊

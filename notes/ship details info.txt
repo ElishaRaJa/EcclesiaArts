@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<form id="checkoutForm">
+    <h2>Checkout</h2>
+
+    <!-- Personal Details -->
+    <label for="name">Full Name *</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email Address *</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone">Phone Number *</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <!-- Shipping Address -->
+    <h3>Shipping Address</h3>
+    <label for="address">Street Address *</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="city">City *</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="zip">Postal / ZIP Code *</label>
+    <input type="text" id="zip" name="zip" required>
+
+    <label for="country">Country *</label>
+    <select id="country" name="country" required>
+        <option value="">Select Country</option>
+        <option value="USA">United States</option>
+        <option value="UK">United Kingdom</option>
+        <option value="Germany">Germany</option>
+        <option value="Australia">Australia</option>
+        <option value="Canada">Canada</option>
+        <option value="South Africa">South Africa</option>
+        <!-- Add more countries as needed -->
+    </select>
+
+    <label for="instructions">Delivery Instructions (Optional)</label>
+    <textarea id="instructions" name="instructions" rows="3"></textarea>
+
+    <!-- Payment Details -->
+    <h3>Payment Details</h3>
+    <label for="payment">Payment Method *</label>
+    <select id="payment" name="payment" required>
+        <option value="">Select Payment Method</option>
+        <option value="credit_card">Credit Card</option>
+        <option value="paypal">PayPal</option>
+        <option value="bank_transfer">Bank Transfer</option>
+    </select>
+
+    <label for="invoice">Request an Invoice?</label>
+    <select id="invoice" name="invoice">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+    </select>
+
+    <!-- Customs & Import -->
+    <h3>Customs & Import Information</h3>
+    <label for="tax_id">Tax ID (Required for Some Countries)</label>
+    <input type="text" id="tax_id" name="tax_id" placeholder="Only required for countries like Brazil, South Korea">
+
+    <label>
+        <input type="checkbox" id="importFees" required>
+        I understand that I am responsible for any import duties, taxes, or customs fees.
+    </label>
+
+    <!-- Special Requests -->
+    <h3>Special Requests</h3>
+    <label for="message">Gift Message (Optional)</label>
+    <textarea id="message" name="message" rows="2" placeholder="Include a note for the recipient"></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit">Place Order</button>
+</form>
+
+<script>
+    document.getElementById("checkoutForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        alert("Your order has been placed successfully!");
+        // Here you can integrate with a payment processor or backend system
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+
+import { db, storage } from './firebaseConfig';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, serverTimestamp, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { query, orderBy, limit } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+
+async function getPaintings(page = 1, paintingsPerPage = 10) {
+  try {
+      const paintingsCollectionRef = collection(db, "paintings");
+      const q = query(paintingsCollectionRef, orderBy("createdAt", "desc"), limit(paintingsPerPage));
+      const querySnapshot = await getDocs(q);
+      
+      return querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+      }));
+  } catch (error) {
+      console.error("Error fetching paintings:", error);
+      throw new Error("Could not fetch paintings. Please try again later.");
+  }
+}
+
+
+async function uploadPainting(file, paintingId) {
+  const storageRef = ref(storage, `paintings/${paintingId}/${file.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, file);
+
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      (error) => {
+        reject(new Error("Error uploading painting: " + error.message));
+      },
+      () => {
+        resolve(); 
+      }
+    );
+  });
+}
+
+async function addPaintingToFirestore(paintingData, role) {
+  if (role !== "admin") {
+      throw new Error("You do not have permission to add paintings.");
+  }
+
+  try {
+      const paintingsCollectionRef = collection(db, "paintings", "paintingList");
+      await addDoc(paintingsCollectionRef, {
+          ...paintingData,
+          createdAt: serverTimestamp(),
+      });
+
+      console.log("Painting added successfully!");
+  } catch (error) {
+      console.error("Error adding painting:", error);
+      throw new Error("Could not add painting. Please try again later.");
+  }
+}
+
+async function deletePainting(paintingId, role) {
+  if (role !== "admin") {
+      throw new Error("You do not have permission to delete paintings.");
+  }
+
+  try {
+      const paintingDocRef = doc(db, "paintings", "paintingList", paintingId);
+      await deleteDoc(paintingDocRef);
+      console.log("Painting deleted successfully!");
+  } catch (error) {
+      console.error("Error deleting painting:", error);
+      throw new Error("Could not delete painting. Please try again later.");
+  }
+}
+
+
+async function updatePaintingInFirestore(paintingId, updatedData, userRole) {
+  if (userRole !== "admin") {
+    throw new Error("Permission denied: Only admins can update paintings.");
+  }
+
+  try {
+    const paintingRef = doc(db, "paintings", "paintingList", paintingId);
+    await updateDoc(paintingRef, updatedData);
+    console.log("Painting updated successfully!");
+  } catch (error) {
+    console.error("Error updating painting:", error);
+    throw new Error("Could not update painting. Please try again later.");
+  }
+}
+async function getPainting(paintingId) {
+  try {
+    const paintingRef = doc(db, "paintings", paintingId); // Removed "paintingList"
+    const paintingSnap = await getDoc(paintingRef);
+    if (paintingSnap.exists()) {
+      return paintingSnap.data();
+    } else {
+      throw new Error("No such painting!");
+    }
+  } catch (error) {
+    console.error("Error getting painting:", error);
+    throw new Error("Could not retrieve painting. Please try again later.");
+  }
+}
+async function getAllPaintings() {
+  try {
+    const paintingsCollectionRef = collection(db, "paintings"); // Removed "paintingList"
+    const snapshot = await getDocs(paintingsCollectionRef);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error getting paintings:", error);
+    throw new Error("Could not retrieve paintings. Please try again later.");
+  }
+}
+
+async function getAllArtworks() {
+  try {
+    const artworksCollectionRef = collection(db, "artworks");
+    const snapshot = await getDocs(artworksCollectionRef);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error getting artworks:", error);
+    throw new Error("Could not retrieve artworks. Please try again later.");
+  }
+}
+
+async function reservePainting(paintingId, userRole) {
+  if (userRole !== "admin") {
+    throw new Error("Permission denied: Only admins can reserve paintings.");
+  }
+
+  try {
+    const paintingRef = doc(db, "paintings", "paintingList", paintingId);
+    await updateDoc(paintingRef, { status: "reserved" });
+    console.log("Painting reserved successfully!");
+  } catch (error) {
+    console.error("Error reserving painting:", error);
+    throw new Error("Could not reserve painting. Please try again later.");
+  }
+}
+
+
+async function sellPainting(paintingId, userRole) {
+  if (userRole !== "admin") {
+    throw new Error("Permission denied: Only admins can sell paintings.");
+  }
+
+  try {
+    const paintingRef = doc(db, "paintings", "paintingList", paintingId);
+    await updateDoc(paintingRef, { status: "sold" });
+    console.log("Painting marked as sold successfully!");
+  } catch (error) {
+    console.error("Error selling painting:", error);
+    throw new Error("Could not mark painting as sold. Please try again later.");
+  }
+}
+
+async function registerUser(userData) {
+  try {
+    const userRef = doc(db, "users", userData.id);
+    await setDoc(userRef, userData);
+    console.log("User registered successfully!");
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw new Error("Could not register user. Please try again later.");
+  }
+}
+
+
+async function loginUser(credentials) {
+  const auth = getAuth();
+  const { email, password } = credentials;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("User logged in successfully!", userCredential.user);
+    return userCredential.user; // Return the logged-in user info
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    throw new Error("Could not log in user. Please check your credentials and try again.");
+  }
+}
+
+async function createOrder(orderData) {
+  try {
+    const ordersCollectionRef = collection(db, "orders");
+    await addDoc(ordersCollectionRef, {
+      ...orderData,
+      createdAt: serverTimestamp(),
+    });
+    console.log("Order created successfully!");
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw new Error("Could not create order. Please try again later.");
+  }
+}
+
+async function getUserOrders(userId) {
+  try {
+    const ordersCollectionRef = collection(db, "orders");
+    const q = query(ordersCollectionRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error getting user orders:", error);
+    throw new Error("Could not retrieve user orders. Please try again later.");
+  }
+}
+
+
+async function createOrder(orderData) {
+  try {
+      const ordersCollectionRef = collection(db, "orders");
+      await addDoc(ordersCollectionRef, {
+          userId: orderData.userId,
+          artworkId: orderData.artworkId,
+          orderDate: serverTimestamp(),
+          orderStatus: "pending", // Initial status
+          totalAmount: orderData.totalAmount,
+          shippingAddress: orderData.shippingAddress,
+          shippingMethod: orderData.shippingMethod,
+          shippingCost: orderData.shippingCost,
+          paymentMethod: orderData.paymentMethod,
+          paymentStatus: "pending", // Initial payment status
+          specialInstructions: orderData.specialInstructions || null,
+          certificateOfAuthenticityProvided: orderData.certificateOfAuthenticityProvided,
+          conditionReportProvided: orderData.conditionReportProvided,
+      });
+      console.log("Order created successfully!");
+  } catch (error) {
+      console.error("Error creating order:", error);
+      throw new Error("Could not create order. Please try again later.");
+  }
+}
+
+async function getUserOrders(userId) {
+  try {
+      const ordersCollectionRef = collection(db, "orders");
+      const q = query(ordersCollectionRef, where("userId", "==", userId));
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+      console.error("Error getting user orders:", error);
+      throw new Error("Could not retrieve user orders. Please try again later.");
+  }
+}
+
+async function updateOrderStatus(orderId, newStatus) {
+  try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, { orderStatus: newStatus });
+      console.log(`Order ${orderId} status updated to ${newStatus}`);
+  } catch (error) {
+      console.error("Error updating order status:", error);
+      throw new Error("Could not update order status. Please try again later.");
+  }
+}
+
+async function updatePaymentStatus(orderId, newPaymentStatus) {
+  try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, { paymentStatus: newPaymentStatus });
+      console.log(`Order ${orderId} payment status updated to ${newPaymentStatus}`);
+  } catch (error) {
+      console.error("Error updating payment status:", error);
+      throw new Error("Could not update payment status. Please try again later.");
+  }
+}
+
+async function addTrackingNumber(orderId, trackingNumber) {
+  try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, { trackingNumber: trackingNumber });
+      console.log(`Tracking number added to order ${orderId}`);
+  } catch (error) {
+      console.error("Error adding tracking number:", error);
+      throw new Error("Could not add tracking number. Please try again later.");
+  }
+}
+
+export {
+  uploadPainting,
+  addPaintingToFirestore,
+  updatePaintingInFirestore,
+  deletePainting,
+  getPainting,
+  getAllPaintings,
+  reservePainting,
+  sellPainting,
+  registerUser,
+  loginUser,
+  createOrder,
+  getUserOrders,
+  updateOrderStatus,
+  updatePaymentStatus,
+  addTrackingNumber,
+  getPaintings,
+  getAllArtworks,
+};

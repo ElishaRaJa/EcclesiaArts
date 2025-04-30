@@ -1,0 +1,114 @@
+:root {
+  --admin-spacing: 1rem;
+  --admin-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --admin-success: #4caf50;
+  --admin-error: #f44336;
+}
+
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--admin-spacing);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: calc(var(--admin-spacing) * 1.5);
+}
+
+.card {
+  box-shadow: var(--admin-card-shadow);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.quick-actions .actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--admin-spacing);
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-item small {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Loading state */
+.loading {
+  position: relative;
+  min-height: 100px;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Message styling */
+.message {
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: var(--admin-spacing);
+}
+
+.message.success {
+  background-color: var(--admin-success);
+  color: white;
+}
+
+.message.error {
+  background-color: var(--admin-error);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: var(--admin-spacing);
+  }
+  
+  .admin-dashboard {
+    padding: 0.5rem;
+  }
+}

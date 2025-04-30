@@ -1,0 +1,36 @@
+# Project Task Tracking
+
+## Active Tasks
+- [ ] 2025-04-25: Code cleanup (High Priority)
+  - Remove unused components
+  - Consolidate duplicate functionality
+- [x] 2025-04-25: Error handling improvements
+  - Standardize error messages
+  - Add user-facing notifications
+
+## Completed Tasks
+- [x] 2025-04-25: Initial code review completed
+- [x] 2025-04-25: Documentation system setup
+- [x] 2025-04-25: Auth error handling
+- [x] 2025-04-25: Toast notifications
+- [x] 2025-04-25: Artwork loading states
+
+## Backlog
+- Bob Go API integration
+- PayPal payment processing
+- Location detection
+- Performance optimization
+- Architectural decision records
+- Component documentation
+
+### Order Management System Plan
+#### Core Features
+- Order listing with filters
+- Status tracking (pending/fulfilled/cancelled)
+- Customer communication
+- Reporting
+
+#### Implementation Phases
+1. Basic order listing
+2. Status management
+3. Reporting dashboard

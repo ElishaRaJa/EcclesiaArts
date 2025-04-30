@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+:root {
+  /* Base Styles */
+  font-family: 'Open Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Color System */
+  --primary-dark: #041E42;
+  --primary-light: #0a2e4e;
+  --gold: #c9a759;
+  --gold-light: #f0c040;
+  --success: #4CAF50;
+  --success-dark: #45a049;
+  --error: #f44336;
+  --white: #ffffff;
+  --gray-light: #A7A9AC;
+
+  /* Light/Dark Mode Defaults */
+  color-scheme: light dark;
+  color: var(--white);
+  background-color: var(--primary-dark);
+}
+
+body {
+  margin: 0;
+  padding-top: 60px; /* Adjust according to navbar height */
+  background-color: var(--white);
+  color: #333;
+}
+
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+.button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-dark);
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.button:hover {
+  background-color: var(--primary-light);
+  border-color: var(--gold);
+}
+
+/* Button Variants */
+.button--primary {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.button--secondary {
+  background-color: var(--gold);
+  color: var(--primary-dark);
+}
+
+.button--primary:hover {
+  background-color: var(--primary-light);
+}
+
+.button--secondary:hover {
+  background-color: var(--gold-light);
+}
+
+.button:focus,
+.button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  .button {
+    background-color: var(--white);
+    color: var(--primary-dark);
+    border: 1px solid var(--gray-light);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.button {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 0.6em 1.2em;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.button:hover {
+  background-color: var(--primary-light);
+  border-color: var(--gold);
+}
+
+/* Forms */
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--accent-color);
+  border-radius: 5px;
+  transition: border 0.3s;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Navigation */
+.navbar {
+  background: var(--primary-dark);
+  color: var(--white);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar__link {
+  color: var(--white);
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.navbar__link:hover {
+  color: var(--gold);
+}
+
+/* Footer */
+.footer {
+  background: var(--gray-light);
+  color: var(--primary-dark);
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+/* STYLE GUIDE */
+/*
+BEM (Block Element Modifier) Methodology:
+
+.block {}           // Standalone component
+.block__element {}  // Part of block that has no standalone meaning
+.block--modifier {} // Different state or version of block
+
+Example:
+.navbar {}              // Block
+.navbar__link {}        // Element
+.navbar--dark {}        // Modifier
+
+Color Variables:
+- --primary-dark: #041E42 (main brand color)
+- --primary-light: #0a2e4e (hover states)
+- --gold: #c9a759 (accent color)
+- --gold-light: #f0c040 (hover states)
+- --white: #ffffff
+- --gray-light: #A7A9AC (borders/accents)
+
+Spacing:
+- Base unit: 8px
+- Small: 4px
+- Medium: 8px
+- Large: 16px
+- X-Large: 24px
+
+Breakpoints:
+- Mobile: <768px
+- Tablet: 768-1024px
+- Desktop: >1024px
+*/

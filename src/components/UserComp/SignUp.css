@@ -1,0 +1,136 @@
+/* SignUp Container */
+.signup-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.signup__title {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Form */
+.signup__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Input Fields */
+.signup__field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.signup__input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.signup__input:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+}
+
+/* Password Requirements */
+.signup__requirements {
+  font-size: 0.8rem;
+  color: var(--gray-medium);
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--gray-extra-light);
+}
+
+.signup__requirements.valid {
+  color: var(--success);
+  background-color: rgba(var(--success-rgb), 0.1);
+}
+
+/* Terms Checkbox */
+.signup__terms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 4px;
+  background-color: var(--gray-extra-light);
+  transition: background-color 0.3s;
+}
+
+.signup__terms:hover {
+  background-color: rgba(var(--primary-dark-rgb), 0.05);
+}
+
+.signup__terms input {
+  margin: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--primary-dark);
+}
+
+.signup__terms label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Error Message */
+.signup__error {
+  color: var(--error);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+/* Submit Button */
+.signup__submit-btn {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
+}
+
+.signup__submit-btn:hover {
+  background-color: var(--primary-light);
+}
+
+/* Additional Links */
+.signup__link {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--primary-dark);
+}
+
+.signup__link a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup__link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 1.5rem;
+    margin: 1rem;
+    box-shadow: none;
+  }
+}

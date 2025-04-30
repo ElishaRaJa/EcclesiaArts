@@ -1,0 +1,97 @@
+/* Edit Profile Container */
+.edit-profile {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.edit-profile__title {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Subtitle */
+.edit-profile__subtitle {
+  font-size: 1.3rem;
+  color: var(--primary-dark);
+  margin: 1rem 0;
+  font-weight: 500;
+  border-bottom: 1px solid var(--gray-light);
+  padding-bottom: 0.5rem;
+}
+
+/* Form */
+.edit-profile__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Form Sections */
+.edit-profile__section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Labels */
+.edit-profile__label {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* Inputs */
+.edit-profile__input {
+  padding: 0.8rem;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.edit-profile__input:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+}
+
+/* Checkbox */
+.edit-profile__checkbox {
+  margin-left: 0.5rem;
+}
+
+/* Error Messages */
+.edit-profile__error {
+  color: var(--error);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+/* Submit Button */
+.edit-profile__submit {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.edit-profile__submit:hover {
+  background-color: var(--primary-light);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .edit-profile {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+}
