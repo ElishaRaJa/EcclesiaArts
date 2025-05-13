@@ -1,0 +1,32 @@
+customer json :
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "phone_number": "+27821234567",
+    "user_id": "user12345",
+    "registration_date": {
+        "_seconds": 1678886400,  // Example Firestore Timestamp (seconds since epoch)
+        "_nanoseconds": 0
+    },
+    "billing_address": {
+        "street_address": "123 Main St",
+        "city": "Johannesburg",
+        "state": "Gauteng",
+        "country": "ZA",
+        "zip_code": "2000"
+    },
+    "shipping_address": {
+        "company": "ABC Corp",
+        "street_address": "456 Oak Ave",
+        "local_area": "Sandton",
+        "city": "Johannesburg",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "2196"
+    },
+     "order_history": ["order1", "order2"],
+     "current_orders": ["order3"],
+     "username": "johndoe",
+     "same_billing_shipping": false
+}

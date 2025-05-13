@@ -6,5 +6,5 @@ dotenv.config();  // Ensure dotenv is used correctly
 
 export default defineConfig({
   plugins: [react()],
-  base: '/EcclesiaArts/',  // Specify the repo name here (if the repo name is EcclesiaArts)
+  base: process.env.NODE_ENV === 'production' ? '/EcclesiaArts/' : '/'
 })

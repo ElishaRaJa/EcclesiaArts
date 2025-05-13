@@ -112,6 +112,13 @@ const AdminDashboard = () => {
                 >
                   Manage Orders
                 </Button>
+                <Button 
+                  variant="primary"
+                  size="md"
+                  onClick={() => navigate("/admin/artist-profile")}
+                >
+                  Manage Artist Profile
+                </Button>
               </div>
             </CardContent>
           </Card>

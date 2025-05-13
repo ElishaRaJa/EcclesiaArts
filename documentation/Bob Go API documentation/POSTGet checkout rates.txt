@@ -1,0 +1,123 @@
+Get checkout rates
+POSThttps://api.sandbox.bobgo.co.za/v2/rates-at-checkout
+This endpoint is not designed to get rates for shipments, but rather to get rates that are configured within Bob Go to supply a rate that buyers will pay at checkout. See our Rates section to get rates for shipments
+
+Field	Type	Description	Required
+collection_address.company	string	Name of the company responsible for the collection	No
+collection_address.street_address	string	Street address of the collection point	Yes
+collection_address.local_area	string	Local area or neighborhood of the collection point	Yes
+collection_address.city	string	City where the collection point is located	Yes
+collection_address.zone	string	Zone or state code for the collection point	Yes
+collection_address.country	string	Two-letter ISO country code for the collection point	Yes
+collection_address.code	string	Postal or zip code of the collection point	Yes
+collection_address.lat	float	Latitude coordinate of the collection point	No
+collection_address.lng	float	Longitude coordinate of the collection point	No
+delivery_address.company	string	Name of the company responsible for the delivery	No
+delivery_address.street_address	string	Street address of the delivery point	Yes
+delivery_address.local_area	string	Local area or neighborhood of the delivery point	Yes
+delivery_address.city	string	City where the delivery point is located	Yes
+delivery_address.zone	string	Zone or state code for the delivery point	Yes
+delivery_address.country	string	Two-letter ISO country code for the delivery point	Yes
+delivery_address.code	string	Postal or zip code of the delivery point	Yes
+delivery_address.lat	float	Latitude coordinate of the delivery point	No
+delivery_address.lng	float	Longitude coordinate of the delivery point	No
+items	array	Array of item objects in the shipment	Yes
+items.description	string	Description of the item	Yes
+items.price	number	Price of the item	Yes
+items.length_cm	number	Length of the item in centimeters	Yes
+items.width_cm	number	Width of the item in centimeters	Yes
+items.height_cm	number	Height of the item in centimeters	Yes
+items.weight_kg	number	Weight of the item in kilograms	Yes
+declared_value	number	Total declared value of the shipment	Yes
+handling_time	number	Handling time for the shipment in business days	Yes
+Request
+POSThttps://api.sandbox.bobgo.co.za/v2/rates-at-checkout
+Copy body
+Edit body
+{
+    "collection_address": {
+        "company": "Some Company",
+        "street_address": "177 Jan Smuts Avenue, Lumley House",
+        "local_area": "Rosebank",
+        "city": "Johannesburg",
+        "zone": "GP",
+        "country": "ZA",
+        "code": "2121",
+        "lat": -26.147489,
+        "lng": 28.035019
+    },
+    "delivery_address": {
+        "company": "Takealot Edenvale",
+        "street_address": "5 Mountjoy Street",
+        "local_area": "Wilbart",
+        "city": "Johannesburg",
+        "zone": "GP",
+        "country": "ZA",
+        "code": "1401",
+        "lat": -26.165775,
+        "lng": 28.163755
+    },
+    "items": [
+        {
+            "description": "",
+            "price": 200,
+            "quantity": 1,
+            "length_cm": 17,
+            "width_cm": 8,
+            "height_cm": 5,
+            "weight_kg": 0
+        }
+    ],
+    "declared_value": 0,
+    "handling_time": 2
+}
+Response
+
+Run request
+{
+  "rates": [
+    {
+      "id": 339,
+      "service_name": "Express shipping",
+      "service_code": "bobgo_339_4_0",
+      "total_price": 700,
+      "description": "Default express shipping",
+      "currency": "ZAR",
+      "min_delivery_date": "2025-05-16",
+      "max_delivery_date": "2025-05-19",
+      "base_rate": 700,
+      "liability_cover": {
+        "declared_value": 0,
+        "price": 0,
+        "provider_liability_cover": false
+      },
+      "surcharges": [],
+      "type": "door",
+      "service_level_priority": 1,
+      "provider_slug": "sandbox",
+      "service_level_code": "LSX"
+    },
+    {
+      "id": 336,
+      "service_name": "Standard shipping",
+      "service_code": "bobgo_336_1_1",
+      "total_price": 90,
+      "description": "Default standard shipping",
+      "currency": "ZAR",
+      "min_delivery_date": "2025-05-19",
+      "max_delivery_date": "2025-05-20",
+      "base_rate": 89.13,
+      "liability_cover": {
+        "declared_value": 0,
+        "price": 0,
+        "provider_liability_cover": false
+      },
+      "surcharges": [],
+      "type": "door",
+      "service_level_priority": 2,
+      "provider_slug": "demo",
+      "service_level_code": "ECO"
+    }
+  ],
+  "count": 2
+}

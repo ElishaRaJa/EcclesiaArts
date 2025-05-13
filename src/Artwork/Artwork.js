@@ -23,10 +23,24 @@ async function addArtworkToFirestore(artworkData, role) {
         throw new Error("You do not have permission to add artworks.");
     }
 
+    // Calculate packaging dimensions if not provided (5cm padding)
+    const packaging_height = artworkData.packaging_height || artworkData.artwork_height + 5;
+    const packaging_width = artworkData.packaging_width || artworkData.artwork_width + 5;
+    const packaging_depth = artworkData.packaging_depth || (artworkData.artwork_depth || 0) + 5;
+
     try {
         const artworksCollectionRef = collection(db, "artworks");
         await addDoc(artworksCollectionRef, {
             ...artworkData,
+            artwork_height: artworkData.artwork_height,
+            artwork_width: artworkData.artwork_width,
+            artwork_depth: artworkData.artwork_depth || 0,
+            packaging_height,
+            packaging_width,
+            packaging_depth,
+            total_weight: artworkData.total_weight || 1,
+            is_framed: artworkData.is_framed || false,
+            frame_type: artworkData.frame_type || '',
             createdAt: serverTimestamp(),
         });
 
@@ -57,9 +71,20 @@ async function updateArtworkInFirestore(artworkId, updatedData, userRole) {
         throw new Error("Permission denied: Only admins can update artworks.");
     }
 
+    // Maintain packaging dimensions if not updated
+    const currentArtwork = await getArtwork(artworkId);
+    const packaging_height = updatedData.packaging_height || currentArtwork.packaging_height;
+    const packaging_width = updatedData.packaging_width || currentArtwork.packaging_width;
+    const packaging_depth = updatedData.packaging_depth || currentArtwork.packaging_depth;
+
     try {
         const artworkRef = doc(db, "artworks", artworkId);
-        await updateDoc(artworkRef, updatedData);
+        await updateDoc(artworkRef, {
+            ...updatedData,
+            packaging_height,
+            packaging_width,
+            packaging_depth
+        });
         console.log("Artwork updated successfully!");
     } catch (error) {
         console.error("Error updating artwork:", error);

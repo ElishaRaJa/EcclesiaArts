@@ -1,0 +1,39 @@
+Orders
+The orders endpoint is a pivotal component of the Bob Go API, offering you the power to programmatically create and manage orders across your accounts. With this endpoint, you can leverage the full suite of Bob Go's capabilities to streamline the order management process, enhancing efficiency from the point of sale through to shipment and fulfilment.
+
+Capabilities and features:
+
+Order creation and management: Initiate new orders directly via the API, and maintain comprehensive control over order amendments, updates, and lifecycle.
+
+Integrated shipping management: Seamlessly submit shipments to our partnered courier services. Monitor the submission statuses to ensure timely dispatch and delivery.
+
+Bulk operations: Save time and resources by creating and managing shipments in bulk, allowing for efficient handling of large order volumes.
+
+Documentation on demand: Generate essential shipping documents such as waybills, packing slips, and manifests directly through the API. Choose from a variety of sizes and formats to meet your specific requirements.
+
+Partial shipments: Flexibly handle orders that require multiple shipment stages, accommodating back-ordered items or different shipment dates.
+
+Packaging solutions: Manage your packaging preferences and requirements, including dimensions, weights, and custom packaging types, ensuring each order is dispatched using the most suitable materials.
+
+Advanced features for streamlined workflows:
+
+Bob Go is designed to facilitate the entire order fulfilment process. This extends beyond mere creation and submission, encompassing every aspect of order fulfilment. Here are some additional ways in which Bob Go simplifies your workflow:
+
+Automated status updates: Keep all stakeholders informed with automatic updates on order status, from payment processing to final delivery.
+
+Dynamic rate calculation: Obtain real-time shipping rates based on order specifics, enabling cost-effective and efficient delivery service selection.
+
+Customization and branding: Customize your shipping materials and documentation with branding options to enhance customer experience and reinforce brand recognition.
+
+By utilizing the Bob Go orders endpoint, you gain access to an ecosystem designed for agility and precision in e-commerce logistics. This comprehensive approach ensures that every order is processed, fulfilled, and delivered with the utmost care and efficiency, offering an unmatched level of service to your customers.
+
+Create order
+POSThttps://api.sandbox.bobgo.co.za/v2/orders
+Update order
+PATCHhttps://api.sandbox.bobgo.co.za/v2/orders
+Get orders
+GEThttps://api.sandbox.bobgo.co.za/v2/orders?limit=10&offset=0
+Get order fulfillments
+GEThttps://api.sandbox.bobgo.co.za/v2/order-fulfillments?order_id=970
+Create a return
+POSThttps://api.sandbox.bobgo.co.za/v2/orders/return

@@ -1,0 +1,78 @@
+# Bob Go Integration Requirements for Ecclesia Arts
+
+## Goal
+Make artworks and website fully compatible with Bob Go's local delivery API while maintaining current functionality.
+
+## Required Artwork Changes
+
+1. New Required Fields:
+   - Physical Dimensions (all in cm):
+     * artwork_height (number)
+     * artwork_width (number) 
+     * artwork_depth (number)
+     * packaging_height (number)
+     * packaging_width (number)
+     * packaging_depth (number)
+   - Weight (kg):
+     * total_weight (number)
+   - Framing Status:
+     * is_framed (boolean)
+     * frame_type (string) [optional]
+
+2. Modified Fields:
+   - shipping_regions: Default to ["ZA"]
+   - shipping_price: Should be calculated via API
+
+3. Data Validation:
+   - All measurements must be positive numbers
+   - Weight must be > 0.1kg
+   - Packaging dimensions must be >= artwork dimensions
+
+## Website Modifications Needed
+
+1. Artwork Creation/Edit:
+   - Add new dimension fields
+   - Add weight input
+   - Add framing options
+   - Auto-calculate packaging dimensions if blank
+
+2. Purchase Flow:
+   - Use real-time shipping calculations
+   - Pass formatted addresses to Bob Go
+   - Handle local delivery restrictions
+
+3. Database Schema:
+   - Update Firestore artwork collection
+   - Add new fields with default values
+   - Migration script for existing artworks
+
+## Implementation Steps
+
+1. Phase 1 - Schema Updates:
+   - Add new fields to artwork model
+   - Update creation/edit forms
+   - Backfill existing artworks
+
+2. Phase 2 - Shipping Integration:
+   - Replace fixed shipping prices
+   - Implement real-time rate calculation
+   - Handle address validation
+
+3. Phase 3 - UI Improvements:
+   - Display shipping estimates
+   - Show packaging requirements
+   - Add framing notices
+
+## Testing Checklist
+- [ ] New artwork creation with all fields
+- [ ] Existing artwork migration
+- [ ] Shipping rate calculation
+- [ ] Address validation
+- [ ] Local delivery restrictions
+- [ ] Error handling
+
+## Maintenance
+- Collection address management
+- API key rotation
+- Rate limit handling
+- Webhook integration

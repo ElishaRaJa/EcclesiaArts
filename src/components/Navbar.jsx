@@ -62,7 +62,7 @@ const Navbar = ({ onLogout }) => {
                     >
                         Contact
                     </Link>
-                    {role === 'admin' && (
+                    {(role === 'admin' || role === 'artist') && (
                         <Link 
                             className="navbar__link" 
                             to="/admin"

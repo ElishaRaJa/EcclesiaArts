@@ -8,33 +8,53 @@ import { getProfileCompletionMessage } from "../../utils/profileUtils";
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState(""); // New state for username
-    const [firstName, setFirstName] = useState(""); // New state for first name
-    const [lastName, setLastName] = useState(""); // New state for last name
+    const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { showToast } = useToast();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        setError(null); // Reset error state before making the sign-up attempt
+        setError(null);
 
         try {
-            // Call the registerCustomer function to create the user in Firebase
-            await registerCustomer(email, password, username, firstName, lastName);
-            showToast({
-                message: "Account created successfully! " + 
-                         getProfileCompletionMessage(['all']),
-                type: "info",
-                action: {
-                    text: "Complete Profile",
-                    onClick: () => navigate("/edit-profile")
-                }
-            });
-            navigate("/"); // Redirect to home page after successful registration
+            // 1. Simulate user creation
+            console.log("Simulated User Registration:", { email, username, firstName, lastName });
+            const simulatedUser = { uid: "simulated-user-id" };
+
+            // 2. Simulate Firestore document creation
+            const registrationDate = new Date();
+            const customerData = {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                phone_number: null,
+                user_id: simulatedUser.uid, // Use simulated user ID
+                registration_date: registrationDate,
+                billing_address: null,
+                shipping_address: {
+                    company: "",
+                    street_address: "",
+                    local_area: "",
+                    city: "",
+                    zone: "",
+                    country: "ZA",
+                    code: "",
+                },
+                order_history: [],
+                current_orders: [],
+                username: username,
+                same_billing_shipping: false,
+            };
+            console.log("Simulated Firestore Document Creation:", customerData);
+
+
+            alert("Account created successfully! (Simulated). Please complete your profile.");
+            navigate("/edit-profile");
         } catch (err) {
-            showToast(err);
-            setError("Failed to sign up. Please check your details and try again.");
+            console.error("Simulated Error:", err);
+            setError("Failed to sign up. Please check your details and try again. (Simulated)");
         }
     };
 
@@ -50,8 +70,9 @@ const SignUp = () => {
         return true;
     };
 
-    const passwordRequirementsClass = password.length >= 8 ? 
-        "signup__requirements valid" : "signup__requirements";
+    const passwordRequirementsClass = password.length >= 8
+        ? "signup__requirements valid"
+        : "signup__requirements";
 
     return (
         <div className="signup-container">
@@ -135,8 +156,8 @@ const SignUp = () => {
                     <p className="signup__error">{error}</p>
                 )}
 
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     className="signup__submit-btn"
                     disabled={passwordError || !acceptedTerms}
                 >

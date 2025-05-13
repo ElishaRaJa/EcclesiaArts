@@ -9,6 +9,7 @@ import About from './Pages/About';
 import Profile from './components/UserComp/Profile';  
 import Contact from './Pages/Contact';
 import Artworks from './Pages/Artworks';
+import ArtworkDetails from './Pages/ArtworkDetails';
 
 import Login from './components/UserComp/Login';
 import Signup from './components/UserComp/SignUp';
@@ -23,7 +24,8 @@ import OrderList from './components/adminComp/OrderList';
 import OrderDetail from './components/adminComp/OrderDetail';
 import UserOrderList from './components/UserComp/UserOrderList';
 import ArtworkManagement from './components/adminComp/ArtworkManagement';
-import UserOrderDetail from './components/UserComp/UserOrderDetail'; 
+import UserOrderDetail from './components/UserComp/UserOrderDetail';
+import ArtistProfileEditor from './components/adminComp/ArtistProfileEditor';
 import { useAuth } from './Firebase/AuthContext';
 
 function AppContent() {
@@ -49,7 +51,7 @@ function AppContent() {
       <Routes>
         <Route path="/admin/artcrud/create-artwork" element={<CreateEditArtworkPage />} />
         <Route path="/admin/artcrud/edit-artwork/:id" element={<CreateEditArtworkPage />} />
-        <Route path="/artwork-details/:id" element={<Artworks />} />
+        <Route path="/artwork-details/:id" element={<ArtworkDetails />} />
         <Route path="/purchase/:id" element={<PurchasePage />} />
 
 
@@ -77,6 +79,12 @@ function AppContent() {
         <Route
           path="/my-orders/:orderId"
           element={user ? <UserOrderDetail /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/admin/artist-profile"
+          element={user && (user.role === 'admin' || user.role === 'artist') 
+            ? <ArtistProfileEditor /> 
+            : <Navigate to="/" replace />}
         />
       </Routes>
 

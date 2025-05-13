@@ -1,13 +1,25 @@
-// src/Pages/EditProfile.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../Firebase/AuthContext';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../Firebase/firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { Box, Typography, TextField, Button, Checkbox, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { editUserDetails } from '../../Firebase/userManagement';
-import './EditProfile.css'
+
+// Bob Go requires these exact province names
+const PROVINCES = [
+    'Eastern Cape',
+    'Free State',
+    'Gauteng',
+    'KwaZulu-Natal',
+    'Limpopo',
+    'Mpumalanga',
+    'North West',
+    'Northern Cape',
+    'Western Cape'
+];
+
 const EditProfile = () => {
-    const { user, loading } = useAuth();
+    const { user, currentUser } = useAuth();
     const [userInfo, setUserInfo] = useState({
         username: '',
         first_name: '',
@@ -18,81 +30,115 @@ const EditProfile = () => {
         shipping_city: '',
         shipping_state: '',
         shipping_zip: '',
-        shipping_country: '',
+        shipping_country: 'South Africa',
         billing_street: '',
         billing_city: '',
         billing_state: '',
         billing_zip: '',
-        billing_country: '',
+        billing_country: 'South Africa',
         same_billing_shipping: true,
     });
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [saveLoading, setSaveLoading] = useState(false);
+    const [saveError, setSaveError] = useState(null);
+    const [saveSuccess, setSaveSuccess] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
-            const fetchUserData = async () => {
-                try {
-                    const docRef = doc(db, 'users', user.uid);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        setUserInfo({
-                            username: data.username,
-                            first_name: data.first_name,
-                            last_name: data.last_name,
-                            email: data.email,
-                            phone_number: data.phone_number || '',
-                            shipping_street: data.shipping_address?.street || '',
-                            shipping_city: data.shipping_address?.city || '',
-                            shipping_state: data.shipping_address?.state || '',
-                            shipping_zip: data.shipping_address?.zip || '',
-                            shipping_country: data.shipping_address?.country || '',
-                            billing_street: data.billing_address?.street || data.shipping_address?.street || '',
-                            billing_city: data.billing_address?.city || data.shipping_address?.city || '',
-                            billing_state: data.billing_address?.state || data.shipping_address?.state || '',
-                            billing_zip: data.billing_address?.zip || data.shipping_address?.zip || '',
-                            billing_country: data.billing_address?.country || data.shipping_address?.country || '',
-                            same_billing_shipping: data.same_billing_shipping !== undefined ? data.same_billing_shipping : true,
-                        });
-                    } else {
-                        console.log('No such document!');
-                    }
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
+        const fetchUserData = async () => {
+            if (!user) {
+                setLoading(false);
+                return;
+            }
+            try {
+                const docRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setUserInfo({
+                        username: data.username || '',
+                        first_name: data.first_name || '',
+                        last_name: data.last_name || '',
+                        email: data.email || '',
+                        phone_number: data.phone_number || '',
+                        shipping_street: data.shipping_address?.street_address || '',
+                        shipping_city: data.shipping_address?.city || '',
+                        shipping_state: data.shipping_address?.zone || '',
+                        shipping_zip: data.shipping_address?.code || '',
+                        shipping_country: data.shipping_address?.country || 'South Africa',
+                        billing_street: data.billing_address?.street_address || null, // Ensure null for initial load
+                        billing_city: data.billing_address?.city || null,           // Ensure null
+                        billing_state: data.billing_address?.zone || null,          // Ensure null
+                        billing_zip: data.billing_zip || null,            // Ensure null
+                        billing_country: data.billing_address?.country || 'South Africa', // Ensure "South Africa"
+                        same_billing_shipping: data.same_billing_shipping !== undefined ? data.same_billing_shipping : true,
+                    });
                 }
-            };
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setSaveError('Failed to load profile data.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (user) {
             fetchUserData();
         } else {
             navigate('/login');
         }
     }, [user, navigate]);
 
+    const validatePhone = (phone) => {
+        return phone.match(/^\+27[0-9]{9}$/);
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setUserInfo((prevUserInfo) => ({
-            ...prevUserInfo,
-            [name]: type === 'checkbox' ? checked : value,
+        setUserInfo(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
     const validateForm = () => {
         const newErrors = {};
-        if (!userInfo.username) newErrors.username = 'Username is required';
-        if (!userInfo.first_name) newErrors.first_name = 'First name is required';
-        if (!userInfo.last_name) newErrors.last_name = 'Last name is required';
-        if (!userInfo.phone_number) newErrors.phone_number = 'Phone number is required';
-        if (!userInfo.shipping_street) newErrors.shipping_street = 'Shipping street is required';
-        if (!userInfo.shipping_city) newErrors.shipping_city = 'Shipping city is required';
-        if (!userInfo.shipping_state) newErrors.shipping_state = 'Shipping state is required';
-        if (!userInfo.shipping_zip) newErrors.shipping_zip = 'Shipping zip is required';
-        if (!userInfo.shipping_country) newErrors.shipping_country = 'Shipping country is required';
+        if (!userInfo.first_name) newErrors.first_name = 'Required';
+        if (!userInfo.last_name) newErrors.last_name = 'Required';
+
+        // Phone validation for Bob Go
+        if (!userInfo.phone_number) {
+            newErrors.phone_number = 'Required';
+        } else if (!validatePhone(userInfo.phone_number)) {
+            newErrors.phone_number = 'Must be +27 followed by 9 digits';
+        }
+
+        // Address validation for Bob Go
+        if (!userInfo.shipping_street) newErrors.shipping_street = 'Required';
+        if (!userInfo.shipping_city) newErrors.shipping_city = 'Required';
+        if (!userInfo.shipping_state) {
+            newErrors.shipping_state = 'Required';
+        } else if (!PROVINCES.includes(userInfo.shipping_state)) {
+            newErrors.shipping_state = 'Must be a valid South African province';
+        }
+        if (!userInfo.shipping_zip) newErrors.shipping_zip = 'Required';
+        if (!userInfo.shipping_country || userInfo.shipping_country !== 'South Africa') {
+            newErrors.shipping_country = 'Must be "South Africa"';
+        }
+
         if (!userInfo.same_billing_shipping) {
-            if (!userInfo.billing_street) newErrors.billing_street = 'Billing street is required';
-            if (!userInfo.billing_city) newErrors.billing_city = 'Billing city is required';
-            if (!userInfo.billing_state) newErrors.billing_state = 'Billing state is required';
-            if (!userInfo.billing_zip) newErrors.billing_zip = 'Billing zip is required';
-            if (!userInfo.billing_country) newErrors.billing_country = 'Billing country is required';
+            if (!userInfo.billing_street) newErrors.billing_street = 'Required';
+            if (!userInfo.billing_city) newErrors.billing_city = 'Required';
+            if (!userInfo.billing_state) {
+                newErrors.billing_state = 'Required';
+            } else if (!PROVINCES.includes(userInfo.billing_state)) {
+                newErrors.billing_state = 'Must be a valid South African province';
+            }
+            if (!userInfo.billing_zip) newErrors.billing_zip = 'Required';
+            if (!userInfo.billing_country || userInfo.billing_country !== 'South Africa') {
+                newErrors.billing_country = 'Must be "South Africa"';
+            }
         }
 
         setErrors(newErrors);
@@ -101,131 +147,269 @@ const EditProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateForm()) {
-            return;
-        }
-        console.log("Data being sent to editUserDetails:", userInfo);
+        if (!validateForm()) return;
+
+        setSaveLoading(true);
+        setSaveError(null);
         try {
-            await editUserDetails(user.uid, userInfo);
-            alert('Profile updated successfully!');
-            navigate('/profile');
+            const userRef = doc(db, 'users', user.uid);
+            const updateData = {
+                username: userInfo.username,
+                first_name: userInfo.first_name,
+                last_name: userInfo.last_name,
+                phone_number: userInfo.phone_number,
+                shipping_address: {
+                    street_address: userInfo.shipping_street,
+                    city: userInfo.shipping_city,
+                    zone: userInfo.shipping_state,
+                    code: userInfo.shipping_zip,
+                    country: userInfo.shipping_country,
+                },
+                same_billing_shipping: userInfo.same_billing_shipping,
+            };
+
+            if (userInfo.same_billing_shipping) {
+                updateData.billing_address = { // setting billing address same as shipping.
+                    street_address: userInfo.shipping_street,
+                    city: userInfo.shipping_city,
+                    zone: userInfo.shipping_state,
+                    code: userInfo.shipping_zip,
+                    country: userInfo.shipping_country,
+                };
+            } else {
+                updateData.billing_address = { // different billing address.
+                    street_address: userInfo.billing_street,
+                    city: userInfo.billing_city,
+                    zone: userInfo.billing_state,
+                    code: userInfo.billing_zip,
+                    country: userInfo.billing_country,
+                };
+            }
+            await updateDoc(userRef, updateData);
+            setSaveSuccess(true);
+            setTimeout(() => setSaveSuccess(false), 3000);
         } catch (error) {
-            console.error('Error updating profile:', error);
-            alert('Failed to update profile. Please try again.');
+            setSaveError('Failed to update profile');
+            console.error(error);
+        } finally {
+            setSaveLoading(false);
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    if (loading) return <Box>Loading...</Box>;
 
     return (
-        <div className="edit-profile">
-            <h1 className="edit-profile__title">Edit Profile</h1>
-            <form onSubmit={handleSubmit} className="edit-profile__form">
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">Username:</label>
-                    <input type="text" name="username" value={userInfo.username} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.username && <p className="edit-profile__error">{errors.username}</p>}
-                </div>
+        <Box sx={{ p: 4 }}>
+            <Typography variant="h4" gutterBottom>Edit Profile</Typography>
 
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">First Name:</label>
-                    <input type="text" name="first_name" value={userInfo.first_name} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.first_name && <p className="edit-profile__error">{errors.first_name}</p>}
-                </div>
+            {saveError && <Alert severity="error" sx={{ mb: 2 }}>{saveError}</Alert>}
+            {saveSuccess && <Alert severity="success" sx={{ mb: 2 }}>Profile updated!</Alert>}
 
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">Last Name:</label>
-                    <input type="text" name="last_name" value={userInfo.last_name} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.last_name && <p className="edit-profile__error">{errors.last_name}</p>}
-                </div>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4 }}>
+                <TextField
+                    fullWidth
+                    label="Username"
+                    name="username"
+                    value={userInfo.username}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    disabled
+                />
+                <TextField
+                    fullWidth
+                    label="First Name"
+                    name="first_name"
+                    value={userInfo.first_name}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.first_name}
+                    helperText={errors.first_name}
+                />
+                <TextField
+                    fullWidth
+                    label="Last Name"
+                    name="last_name"
+                    value={userInfo.last_name}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.last_name}
+                    helperText={errors.last_name}
+                />
+                <TextField
+                    fullWidth
+                    label="Email"
+                    name="email"
+                    type="email"
+                    value={userInfo.email}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    disabled
+                />
+                <TextField
+                    fullWidth
+                    label="Phone Number"
+                    name="phone_number"
+                    value={userInfo.phone_number}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.phone_number}
+                    helperText={errors.phone_number}
+                />
 
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">Email:</label>
-                    <input type="email" name="email" value={userInfo.email} onChange={handleChange} 
-                           className="edit-profile__input" disabled />
-                </div>
+                <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Shipping Address</Typography>
+                <TextField
+                    fullWidth
+                    label="Street Address"
+                    name="shipping_street"
+                    value={userInfo.shipping_street}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.shipping_street}
+                    helperText={errors.shipping_street}
+                />
+                <TextField
+                    fullWidth
+                    label="City"
+                    name="shipping_city"
+                    value={userInfo.shipping_city}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.shipping_city}
+                    helperText={errors.shipping_city}
+                />
+                <TextField
+                    fullWidth
+                    label="Province"
+                    name="shipping_state"
+                    select
+                    value={userInfo.shipping_state}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.shipping_state}
+                    helperText={errors.shipping_state}
+                >
+                    {PROVINCES.map((province) => (
+                        <option key={province} value={province}>{province}</option>
+                    ))}
+                </TextField>
+                <TextField
+                    fullWidth
+                    label="Zip Code"
+                    name="shipping_zip"
+                    value={userInfo.shipping_zip}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    error={!!errors.shipping_zip}
+                    helperText={errors.shipping_zip}
+                />
+                <TextField
+                    fullWidth
+                    label="Country"
+                    name="shipping_country"
+                    value={userInfo.shipping_country}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    disabled
+                    error={!!errors.shipping_country}
+                    helperText={errors.shipping_country}
+                />
 
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">Phone Number:</label>
-                    <input type="text" name="phone_number" value={userInfo.phone_number} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.phone_number && <p className="edit-profile__error">{errors.phone_number}</p>}
-                </div>
-
-                <div className="edit-profile__section">
-                    <h3 className="edit-profile__subtitle">Shipping Address</h3>
-                    <label className="edit-profile__label">Street:</label>
-                    <input type="text" name="shipping_street" value={userInfo.shipping_street} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.shipping_street && <p className="edit-profile__error">{errors.shipping_street}</p>}
-
-                    <label className="edit-profile__label">City:</label>
-                    <input type="text" name="shipping_city" value={userInfo.shipping_city} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.shipping_city && <p className="edit-profile__error">{errors.shipping_city}</p>}
-
-                    <label className="edit-profile__label">State:</label>
-                    <input type="text" name="shipping_state" value={userInfo.shipping_state} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.shipping_state && <p className="edit-profile__error">{errors.shipping_state}</p>}
-
-                    <label className="edit-profile__label">Zip:</label>
-                    <input type="text" name="shipping_zip" value={userInfo.shipping_zip} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.shipping_zip && <p className="edit-profile__error">{errors.shipping_zip}</p>}
-
-                    <label className="edit-profile__label">Country:</label>
-                    <input type="text" name="shipping_country" value={userInfo.shipping_country} onChange={handleChange} 
-                           className="edit-profile__input" required />
-                    {errors.shipping_country && <p className="edit-profile__error">{errors.shipping_country}</p>}
-                </div>
-
-                <div className="edit-profile__section">
-                    <label className="edit-profile__label">
-                        Same Billing Address:
-                        <input type="checkbox" name="same_billing_shipping" checked={userInfo.same_billing_shipping} 
-                               onChange={handleChange} className="edit-profile__checkbox" />
-                    </label>
-                </div>
-
+                <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
+                    <Checkbox
+                        name="same_billing_shipping"
+                        checked={userInfo.same_billing_shipping}
+                        onChange={handleChange}
+                    />
+                    Billing Address
+                </Typography>
                 {!userInfo.same_billing_shipping && (
-                    <div className="edit-profile__section">
-                        <h3 className="edit-profile__subtitle">Billing Address</h3>
-                        <label className="edit-profile__label">Street:</label>
-                        <input type="text" name="billing_street" value={userInfo.billing_street} onChange={handleChange} 
-                               className="edit-profile__input" required />
-                        {errors.billing_street && <p className="edit-profile__error">{errors.billing_street}</p>}
-
-                        <label className="edit-profile__label">City:</label>
-                        <input type="text" name="billing_city" value={userInfo.billing_city} onChange={handleChange} 
-                               className="edit-profile__input" required />
-                        {errors.billing_city && <p className="edit-profile__error">{errors.billing_city}</p>}
-
-                        <label className="edit-profile__label">State:</label>
-                        <input type="text" name="billing_state" value={userInfo.billing_state} onChange={handleChange} 
-                               className="edit-profile__input" required />
-                        {errors.billing_state && <p className="edit-profile__error">{errors.billing_state}</p>}
-
-                        <label className="edit-profile__label">Zip:</label>
-                        <input type="text" name="billing_zip" value={userInfo.billing_zip} onChange={handleChange} 
-                               className="edit-profile__input" required />
-                        {errors.billing_zip && <p className="edit-profile__error">{errors.billing_zip}</p>}
-
-                        <label className="edit-profile__label">Country:</label>
-                        <input type="text" name="billing_country" value={userInfo.billing_country} onChange={handleChange} 
-                               className="edit-profile__input" required />
-                        {errors.billing_country && <p className="edit-profile__error">{errors.billing_country}</p>}
-                    </div>
+                    <>
+                        <TextField
+                            fullWidth
+                            label="Street Address"
+                            name="billing_street"
+                            value={userInfo.billing_street}
+                            onChange={handleChange}
+                            margin="normal"
+                            required
+                            error={!!errors.billing_street}
+                            helperText={errors.billing_street}
+                        />
+                        <TextField
+                            fullWidth
+                            label="City"
+                            name="billing_city"
+                            value={userInfo.billing_city}
+                            onChange={handleChange}
+                            margin="normal"
+                            required
+                            error={!!errors.billing_city}
+                            helperText={errors.billing_city}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Province"
+                            name="billing_state"
+                            select
+                            value={userInfo.billing_state}
+                            onChange={handleChange}
+                            margin="normal"
+                            required
+                            error={!!errors.billing_state}
+                            helperText={errors.billing_state}
+                        >
+                            {PROVINCES.map((province) => (
+                                <option key={province} value={province}>{province}</option>
+                            ))}
+                        </TextField>
+                        <TextField
+                            fullWidth
+                            label="Zip Code"
+                            name="billing_zip"
+                            value={userInfo.billing_zip}
+                            onChange={handleChange}
+                            margin="normal"
+                            required
+                            error={!!errors.billing_zip}
+                            helperText={errors.billing_zip}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Country"
+                            name="billing_country"
+                            value={userInfo.billing_country}
+                            onChange={handleChange}
+                            margin="normal"
+                            required
+                            disabled
+                            error={!!errors.billing_country}
+                            helperText={errors.billing_country}
+                        />
+                    </>
                 )}
 
-                <button type="submit" className="edit-profile__submit">Save Changes</button>
-            </form>
-        </div>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={saveLoading}
+                    sx={{ mt: 2 }}
+                >
+                    {saveLoading ? 'Saving...' : 'Save Profile'}
+                </Button>
+            </Box>
+
+        </Box>
     );
 };
 

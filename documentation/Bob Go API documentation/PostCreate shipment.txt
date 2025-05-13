@@ -1,0 +1,233 @@
+Create a shipment
+POSThttps://api.sandbox.bobgo.co.za/v2/shipments
+It's important to only supply a provider_slug and a service_level_code that was returned in a rate request. Not all couriers and service levels are available for all addresses.
+
+We would recommend that you always first do a rate request to determine what providers ad service levels are available.
+
+Request
+POSThttps://api.sandbox.bobgo.co.za/v2/shipments
+Copy body
+Edit body
+{
+    "timeout": 20000,
+    "collection_address": {
+        "street_address": "125 Dallas Avenue",
+        "company": "",
+        "local_area": "Menlyn",
+        "city": "Pretoria",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "0181"
+    },
+    "collection_contact_name": "John Doe",
+    "collection_contact_mobile_number": "0123456789",
+    "collection_contact_email": "john@doe.com",
+    "delivery_address": {
+        "company": "",
+        "street_address": "22 Ealing Cres",
+        "local_area": "Bryanston",
+        "city": "Johannesburg",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "2191"
+    },
+    "delivery_contact_name": "Jane Doe",
+    "delivery_contact_mobile_number": "0123456789",
+    "delivery_contact_email": "jane@doe.com",
+    "parcels": [
+        {
+            "parcel_description": "",
+            "submitted_length_cm": 42,
+            "submitted_width_cm": 40,
+            "submitted_height_cm": 5,
+            "submitted_weight_kg": 2
+        }
+    ],
+    "declared_value": 1500,
+    "custom_tracking_reference": "Optional custom tracking reference",
+    "custom_order_number": "Optional custom order number",
+    "instructions_collection": "Instructions for collection",
+    "instructions_delivery": "Instructions for delivery",
+    "service_level_code": "ECO",
+    "provider_slug": "demo"
+}
+
+response:
+{
+  "id": 10030,
+  "account_id": 34,
+  "account": {
+    "id": 34,
+    "name": "API Test Account",
+    "account_code": "JRT001"
+  },
+  "billing_transactions": [
+    {
+      "id": 8351,
+      "transaction_date": "2025-05-13T09:06:44.943036Z",
+      "type": "shipping-charge",
+      "description": "",
+      "amount": 99.19,
+      "vat": 12.9378,
+      "vat_percentage": 15,
+      "shipment_id": 10030,
+      "shipment_reference": "UASDMMFS",
+      "order_number": null,
+      "account_id": 34,
+      "account_code": "JRT001",
+      "time_created": "2025-05-13T09:06:44.961371Z",
+      "time_modified": "2025-05-13T09:06:44.962556Z",
+      "ua_doc_number": "",
+      "provider_doc_number": "",
+      "payment_id": null
+    }
+  ],
+  "charged_amount": 99.19,
+  "charged_weight_kg": 3,
+  "collected_date": null,
+  "collection_address_id": 5177,
+  "collection_address": {
+    "id": 5177,
+    "entered_address": "125 Dallas Avenue, Menlyn, Pretoria, 0181, GP, South Africa",
+    "hash": "AD67A5626A069166B157BB8CDAB270DC",
+    "status": "gs_success",
+    "type": "unknown",
+    "company": null,
+    "street_address": "125 Dallas Avenue",
+    "local_area": "Menlyn",
+    "code": "0181",
+    "city": "Pretoria",
+    "zone": "GP",
+    "zone_name": "Gauteng",
+    "country": "South Africa",
+    "lat": -25.785641,
+    "lng": 28.278871,
+    "gs_hash": "8675878BC006669129910C2323D2AFC3",
+    "time_created": "2024-08-01T10:56:19.953567Z",
+    "time_modified": "2025-05-12T04:03:41.86055Z",
+    "geo_partial_match": false,
+    "geo_location_type": "ROOFTOP",
+    "geo_local_area": "Newlands",
+    "geo_city": "City of Tshwane Metropolitan Municipality"
+  },
+  "collection_after": "08:00:00",
+  "collection_before": "17:00:00",
+  "collection_contact_email": "john@doe.com",
+  "collection_contact_mobile_number": "0123456789",
+  "collection_contact_name": "John Doe",
+  "collection_min_date": "2025-05-13T09:06:40.263558Z",
+  "created_by": 286,
+  "created_by_user": {
+    "id": 286,
+    "name": null,
+    "email": ""
+  },
+  "custom_tracking_reference": "Optional custom tracking reference",
+  "declared_value": 1500,
+  "delivered_date": null,
+  "delivery_address_id": 5178,
+  "delivery_address": {
+    "id": 5178,
+    "entered_address": "22 Ealing Cres, Bryanston, Johannesburg, 2191, GP, South Africa",
+    "hash": "B5DE6487A72E8869E2E845A0F223F361",
+    "status": "gs_success",
+    "type": "unknown",
+    "company": null,
+    "street_address": "22 Ealing Cres",
+    "local_area": "Bryanston",
+    "code": "2191",
+    "city": "Johannesburg",
+    "zone": "GP",
+    "zone_name": "Gauteng",
+    "country": "South Africa",
+    "lat": -26.045167,
+    "lng": 28.024191,
+    "gs_hash": "C4A72D895B05A6EB5B859CD8FFB6DB7B",
+    "time_created": "2024-08-01T10:56:20.506842Z",
+    "time_modified": "2025-05-08T06:34:39.149891Z",
+    "geo_partial_match": false,
+    "geo_location_type": "ROOFTOP",
+    "geo_local_area": "Bryanston",
+    "geo_city": "City of Johannesburg Metropolitan Municipality"
+  },
+  "delivery_contact_email": "jane@doe.com",
+  "delivery_contact_mobile_number": "0123456789",
+  "delivery_contact_name": "Jane Doe",
+  "failed_reason": null,
+  "has_provider_doc": null,
+  "final_charge_applied": false,
+  "health_status": "healthy",
+  "collection_reference": "UASDMMFS",
+  "health_status_reason": "",
+  "instructions_collection": "Instructions for collection",
+  "instructions_delivery": "Instructions for delivery",
+  "manifest_id": 0,
+  "parcels": [
+    {
+      "actual_height_cm": null,
+      "actual_length_cm": null,
+      "actual_weight_kg": null,
+      "actual_width_cm": null,
+      "custom_parcel_reference": null,
+      "category": null,
+      "description": null,
+      "is_additional": null,
+      "package_id": null,
+      "provider_tracking_reference": "UASDMMFS/1",
+      "submitted_height_cm": 5,
+      "submitted_length_cm": 42,
+      "submitted_weight_kg": 2,
+      "submitted_width_cm": 40,
+      "tracking_reference": "UASDMMFS/1",
+      "time_created": null,
+      "time_modified": null
+    }
+  ],
+  "parcel_count": 1,
+  "provider_id": 1,
+  "provider": {
+    "id": 1,
+    "name": "Demo Couriers",
+    "phone_number": null,
+    "slug": "demo"
+  },
+  "provider_shipment_id": "69205256",
+  "provider_tracking_reference": "CG7C3T",
+  "provider_slug": "demo",
+  "rate": 99.19,
+  "vat_percentage": 15,
+  "service_level_code": "ECO",
+  "service_level_cut_off_time": "16:30:00",
+  "service_level_id": 1,
+  "service_level": {
+    "code": "ECO",
+    "name": "Economy",
+    "description": "Delivery time varies between 72 and 96 hours depending on destination address.",
+    "type": "economy",
+    "delivery_type": "door",
+    "collection_cut_off_time": "16:30:00",
+    "service_level_days": null
+  },
+  "delivery_location_type": "door",
+  "source": "api-key",
+  "meta": {
+    "estimated_collection_date": "2025-05-19T06:00:00Z",
+    "estimated_delivery_date": "2025-05-26T15:00:00Z",
+    "estimated_delivery_date_from": "2025-05-21T06:00:00Z",
+    "estimated_delivery_date_to": "2025-05-26T15:00:00Z",
+    "custom_order_number": "Optional custom order number",
+    "provider_service_level_code": "ECO"
+  },
+  "status": "pending-collection",
+  "submission_status": "success",
+  "submitted_weight_kg": 2.1,
+  "tags": null,
+  "timeout": 0,
+  "tracking_last_event_time": "2025-05-13T09:06:44.795422Z",
+  "tracking_reference": "UASDMMFS",
+  "slack_triggers": {},
+  "time_created": "2025-05-13T09:06:40.264958Z",
+  "time_modified": "2025-05-13T09:06:46.083132Z",
+  "is_return": false,
+  "has_shipment_notes": false
+}

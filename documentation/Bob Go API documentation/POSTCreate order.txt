@@ -1,0 +1,80 @@
+Create order
+POSThttps://api.sandbox.bobgo.co.za/v2/orders
+Order JSON data
+This documentation explains the fields in the JSON data used to create an order. The JSON data consists of various properties that define the order, customer information, delivery address, and items included in the order.
+
+Fields
+Customer information
+Field	Description	Type	Required
+customer_name	First name of the customer	String	Yes
+customer_surname	Last name of the customer	String	Yes
+customer_email	Email address of the customer	String	Yes
+customer_phone	Phone number of the customer	String	Yes
+Order information
+Field	Description	Type	Required
+currency	Currency used for the order (e.g., 'ZAR')	String	Yes
+buyer_selected_shipping_cost	Shipping cost selected by the buyer	Float	Yes
+buyer_selected_shipping_method	Shipping method selected by the buyer (e.g., 'Standard Shipping')	String	Yes
+payment_status	Status of the payment for the order (e.g., 'paid')	String	Yes
+Delivery address
+Field	Description	Type	Required
+company	Name of the company (if applicable)	String	No
+street_address	Street address for delivery	String	Yes
+local_area	Local area or suburb	String	Yes
+city	City of the delivery address	String	Yes
+zone	State, province, or zone of the delivery address	String	Yes
+country	Two-letter country code (e.g., 'ZA')	String	Yes
+code	Postal or ZIP code of the delivery address	String	Yes
+Order items
+Field	Description	Type	Required
+description	Description of the order item	String	Yes
+vendor	Vendor of the order item (if applicable)	String	No
+sku	Stock Keeping Unit (SKU) of the order item	String	Yes
+unit_price	Price per unit of the order item	Float	Yes
+qty	Quantity of the order item	Integer	Yes
+unit_weight_kg	Weight of the order item in kilograms (per unit)	Float	Yes
+Request
+POSThttps://api.sandbox.bobgo.co.za/v2/orders
+Copy body
+Edit body
+{
+    "channel_order_number": "ABC123",
+    "customer_name": "John",
+    "customer_surname": "Doe",
+    "customer_email": "john@doe.com",
+    "customer_phone": "0123456789",
+    "currency": "ZAR",
+    "buyer_selected_shipping_cost": 49.99,
+    "buyer_selected_shipping_method": "Standard Shipping",
+    "delivery_address": {
+        "company": "",
+        "street_address": "171 Dallas Ave",
+        "local_area": "Menlyn",
+        "city": "Pretoria",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "0181"
+    },
+    "order_items": [
+        {
+            "description": "item1",
+            "vendor": "item1",
+            "sku": "sku1",
+            "unit_price": 100,
+            "qty": 15,
+            "unit_weight_kg": 0.1
+        },
+        {
+            "description": "item2",
+            "sku": "sku1",
+            "unit_price": 200,
+            "qty": 10,
+            "unit_weight_kg": 0.1
+        }
+    ],
+    "payment_status": "paid"
+}
+Response
+
+Running request...
+Order number already exists on channel

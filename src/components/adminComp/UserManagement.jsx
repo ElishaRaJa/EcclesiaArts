@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import './AdminLayout.css';
 import {
   getAllUsers,
   deleteUser,
@@ -163,16 +165,32 @@ const UserManagement = () => {
     }
   }
 
+  const navigate = useNavigate();
+
   return (
-    <div className="user-management">
-      <h2>User Management</h2>
-      <Table
-        columns={columns}
-        data={users}
-        loading={loading}
-        selectable={true}
-        onSelectionChange={(selected) => console.log('Selected:', selected)}
-      />
+    <div className="admin-container">
+      <button className="admin-back-btn" onClick={() => navigate(-1)}>
+        &larr; Back
+      </button>
+      <div className="admin-header">
+        <h2 className="admin-title">User Management</h2>
+      </div>
+      <div className="admin-search-container">
+        <input 
+          type="text" 
+          placeholder="Search users..." 
+          className="admin-search"
+        />
+      </div>
+      <div className="admin-table-container">
+        <Table
+          columns={columns}
+          data={users}
+          loading={loading}
+          selectable={true}
+          onSelectionChange={(selected) => console.log('Selected:', selected)}
+        />
+      </div>
     </div>
   );
 };

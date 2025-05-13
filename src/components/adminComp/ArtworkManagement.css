@@ -1,0 +1,44 @@
+/* Component-specific overrides */
+.artwork-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 80px;
+  padding: 4px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.artwork-thumbnail img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+/* Table cell spacing */
+.table-cell-image {
+  width: 90px;
+  min-width: 90px;
+}
+
+/* Status dropdown */
+.status-select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Backward compatibility */
+.artwork-management {
+  /* Kept for existing references */
+}

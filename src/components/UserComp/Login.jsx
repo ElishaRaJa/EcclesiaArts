@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import { loginUser } from "../../Firebase/auth";
 import { useAuth } from "../../Firebase/AuthContext";
@@ -31,10 +31,12 @@ const Login = () => {
     return <div>Loading...</div>;  // Show a loading message while Firebase is checking the user's authentication state
   }
 
-  if (user) {
-    // If user is already logged in, navigate to dashboard or home
-    navigate("/");
-  }
+  useEffect(() => {
+    if (user) {
+      // If user is already logged in, navigate to dashboard or home
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="login-container">

@@ -1,0 +1,28 @@
+Get orders
+GEThttps://api.sandbox.bobgo.co.za/v2/orders?limit=10&offset=0
+Available parameters:
+
+Name	Description
+id	
+limit	
+offset	
+start_date	
+end_date	
+order	
+order_by	
+tag	
+tag_id	
+payment_status	paid / unpaid / partially-paid
+status	
+fulfillment_status	
+tracking_reference	The reference of the fulfillment (shipment) created in the order
+has_delivery_address	
+delivery_address_zone	Province
+Request
+GEThttps://api.sandbox.bobgo.co.za/v2/orders?limit=10&offset=0
+limit
+2
+offset
+0
+
+

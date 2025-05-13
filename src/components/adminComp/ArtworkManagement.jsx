@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getArtworks, deleteArtwork } from "../../Firebase/firestore";
-import { updateArtworkStatus } from "../../Artwork/Artwork";
+import { deleteArtwork } from "../../Firebase/firestore";
+import './AdminLayout.css';
+import { getAllArtworks, updateArtworkStatus } from "../../Artwork/Artwork";
 import { Button } from "../ui/Button";
 import { Table } from "../ui/Table";
+import './ArtworkManagement.css';
 
 const ArtworkManagement = () => {
   const navigate = useNavigate();
@@ -11,6 +13,27 @@ const ArtworkManagement = () => {
   const [loading, setLoading] = useState(true);
 
   const columns = [
+    {
+      key: 'image',
+      label: 'Image',
+      sortable: false,
+      render: (artwork) => (
+        <div className="artwork-thumbnail">
+          <img 
+            src={artwork.images?.[0] || "https://via.placeholder.com/80x60"} 
+            alt={artwork.title || 'Artwork'}
+            style={{
+              maxWidth: '80px',
+              maxHeight: '60px',
+              objectFit: 'contain'
+            }}
+            onError={(e) => {
+              e.target.src = "https://via.placeholder.com/80x60";
+            }}
+          />
+        </div>
+      )
+    },
     { 
       key: 'id', 
       label: 'ID',
@@ -33,7 +56,32 @@ const ArtworkManagement = () => {
       key: 'price', 
       label: 'Price',
       sortable: true,
-      render: (artwork) => `$${artwork.price.toFixed(2)}`
+      render: (artwork) => {
+      const price = Number(artwork.price);
+      return isNaN(price) ? '-' : `$${price.toFixed(2)}`;
+    }
+    },
+    {
+      key: 'dimensions',
+      label: 'Dimensions (cm)',
+      sortable: false,
+      render: (artwork) => `${artwork.artwork_height || '-'} × ${artwork.artwork_width || '-'} × ${artwork.artwork_depth || '-'}`
+    },
+    {
+      key: 'total_weight',
+      label: 'Weight (kg)',
+      sortable: true,
+      render: (artwork) => {
+      const weight = Number(artwork.total_weight);
+      return isNaN(weight) ? '-' : weight.toFixed(1);
+    }
+    },
+    {
+      key: 'is_framed',
+      label: 'Framed',
+      sortable: true,
+      filterable: true,
+      render: (artwork) => artwork.is_framed ? 'Yes' : 'No'
     },
     { 
       key: 'status', 
@@ -80,7 +128,7 @@ const ArtworkManagement = () => {
   useEffect(() => {
     const fetchArtworks = async () => {
       try {
-        const artworksData = await getArtworks();
+        const artworksData = await getAllArtworks();
         setArtworks(artworksData);
       } catch (error) {
         console.error("Error fetching artworks:", error);
@@ -115,15 +163,22 @@ const ArtworkManagement = () => {
   };
 
   return (
-    <div className="artwork-management">
-      <h2>Artwork Management</h2>
-      <Table
-        columns={columns}
-        data={artworks}
-        loading={loading}
-        selectable={true}
-        onSelectionChange={(selected) => console.log('Selected artworks:', selected)}
-      />
+    <div className="admin-container">
+      <button className="admin-back-btn" onClick={() => navigate(-1)}>
+        &larr; Back
+      </button>
+      <div className="admin-header">
+        <h2 className="admin-title">Artwork Management</h2>
+      </div>
+      <div className="admin-table-container">
+        <Table
+          columns={columns}
+          data={artworks}
+          loading={loading}
+          selectable={true}
+          onSelectionChange={(selected) => console.log('Selected artworks:', selected)}
+        />
+      </div>
     </div>
   );
 };

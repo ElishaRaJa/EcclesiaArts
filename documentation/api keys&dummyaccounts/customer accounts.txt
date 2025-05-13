@@ -1,0 +1,6 @@
+email:
+customer@outlook.com
+password:
+customer
+
+customer 2:

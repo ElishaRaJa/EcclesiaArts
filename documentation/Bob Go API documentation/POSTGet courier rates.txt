@@ -1,0 +1,255 @@
+Get courier rates
+POSThttps://api.sandbox.bobgo.co.za/v2/rates
+Get courier rates
+
+The example call will return rates for all configured couriers on the Bob Go platform.
+
+Should you want to return rates from specific couriers or service levels, you can do so with the following keys:
+
+"providers": [  
+"sandbox",  
+"demo"  
+],  
+"service_levels": [  
+"ECO"  
+],
+Request
+POSThttps://api.sandbox.bobgo.co.za/v2/rates
+Copy body
+Edit body
+{
+    "collection_address": {
+        "street_address": "125 Dallas Avenue",
+        "company": "",
+        "local_area": "Menlyn",
+        "city": "Pretoria",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "0181"
+    },
+    "delivery_address": {
+        "company": "",
+        "street_address": "22 Ealing Cres",
+        "local_area": "Bryanston",
+        "city": "Johannesburg",
+        "zone": "Gauteng",
+        "country": "ZA",
+        "code": "2191"
+    },
+    "parcels": [
+        {
+            "description": "Box",
+            "submitted_length_cm": 40,
+            "submitted_width_cm": 32,
+            "submitted_height_cm": 6,
+            "submitted_weight_kg": 3,
+            "custom_parcel_reference": "custom reference"
+        },
+        {
+            "description": "Flyer",
+            "submitted_length_cm": 40,
+            "submitted_width_cm": 32,
+            "submitted_height_cm": 6,
+            "submitted_weight_kg": 1.3
+        }
+    ],
+    "declared_value": 1500,
+    "timeout": 10000,
+    "collection_contact_mobile_number":"+27123456789",
+    "collection_contact_email":"john@doe.com",
+    "collection_contact_full_name":"John Doe",
+    "delivery_contact_mobile_number":"+27123456789",
+    "delivery_contact_email":"jane@doe.com",
+    "delivery_contact_full_name":"Jane Doe"
+}
+
+responce:
+{
+  "id": 337987,
+  "account_id": 34,
+  "collection_address_id": 5177,
+  "collection_address": {
+    "id": 5177,
+    "entered_address": "125 Dallas Avenue, Menlyn, Pretoria, 0181, GP, South Africa",
+    "hash": "AD67A5626A069166B157BB8CDAB270DC",
+    "status": "gs_success",
+    "type": "unknown",
+    "company": null,
+    "street_address": "125 Dallas Avenue",
+    "local_area": "Menlyn",
+    "code": "0181",
+    "city": "Pretoria",
+    "zone": "GP",
+    "zone_name": "Gauteng",
+    "country": "South Africa",
+    "lat": -25.785641,
+    "lng": 28.278871,
+    "gs_hash": "8675878BC006669129910C2323D2AFC3",
+    "time_created": "2024-08-01T10:56:19.953567Z",
+    "time_modified": "2025-05-12T04:03:41.86055Z",
+    "geo_partial_match": false,
+    "geo_location_type": "ROOFTOP",
+    "geo_local_area": "Newlands",
+    "geo_city": "City of Tshwane Metropolitan Municipality"
+  },
+  "delivery_address_id": 5178,
+  "delivery_address": {
+    "id": 5178,
+    "entered_address": "22 Ealing Cres, Bryanston, Johannesburg, 2191, GP, South Africa",
+    "hash": "B5DE6487A72E8869E2E845A0F223F361",
+    "status": "gs_success",
+    "type": "unknown",
+    "company": null,
+    "street_address": "22 Ealing Cres",
+    "local_area": "Bryanston",
+    "code": "2191",
+    "city": "Johannesburg",
+    "zone": "GP",
+    "zone_name": "Gauteng",
+    "country": "South Africa",
+    "lat": -26.045167,
+    "lng": 28.024191,
+    "gs_hash": "C4A72D895B05A6EB5B859CD8FFB6DB7B",
+    "time_created": "2024-08-01T10:56:20.506842Z",
+    "time_modified": "2025-05-08T06:34:39.149891Z",
+    "geo_partial_match": false,
+    "geo_location_type": "ROOFTOP",
+    "geo_local_area": "Bryanston",
+    "geo_city": "City of Johannesburg Metropolitan Municipality"
+  },
+  "webhook_url": null,
+  "parcels": [
+    {
+      "submitted_length_cm": 40,
+      "submitted_width_cm": 32,
+      "submitted_height_cm": 6,
+      "submitted_weight_kg": 3
+    },
+    {
+      "submitted_length_cm": 40,
+      "submitted_width_cm": 32,
+      "submitted_height_cm": 6,
+      "submitted_weight_kg": 1.3
+    }
+  ],
+  "declared_value": 1500,
+  "total_submitted_weight_kg": 4.3,
+  "timeout": 10000,
+  "time_created": "2025-05-13T09:04:25.647736Z",
+  "provider_rate_requests": [
+    {
+      "rate_response_id": 664464,
+      "provider_id": 1,
+      "provider_slug": "demo",
+      "provider_name": "Demo Couriers",
+      "status": "success",
+      "failed_reason": "",
+      "is_custom_account": null,
+      "responses": [
+        {
+          "service_level_code": "ECO",
+          "service_level": {
+            "code": "ECO",
+            "name": "Economy",
+            "description": "Delivery time varies between 72 and 96 hours depending on destination address.",
+            "type": "economy",
+            "delivery_type": "door",
+            "collection_cut_off_time": "16:30:00",
+            "service_level_days": null
+          },
+          "rate_amount": 119.31,
+          "rate_amount_excl_vat": 103.75,
+          "charged_weight_kg": 5,
+          "status": "success",
+          "failed_reason": null,
+          "pickup_point_location_id": null
+        }
+      ]
+    },
+    {
+      "rate_response_id": 664465,
+      "provider_id": 2,
+      "provider_slug": "sandbox",
+      "provider_name": "Sandbox Couriers",
+      "status": "success",
+      "failed_reason": "",
+      "is_custom_account": null,
+      "responses": [
+        {
+          "service_level_code": "ECO",
+          "service_level": {
+            "code": "ECO",
+            "name": "Economy",
+            "description": "Delivery time varies between 72 and 96 hours depending on destination address.",
+            "type": "economy",
+            "delivery_type": "door",
+            "collection_cut_off_time": "15:00:00",
+            "service_level_days": null
+          },
+          "rate_amount": 150.01,
+          "rate_amount_excl_vat": 130.44,
+          "charged_weight_kg": 5,
+          "status": "success",
+          "failed_reason": null,
+          "pickup_point_location_id": null
+        },
+        {
+          "service_level_code": "LOF",
+          "service_level": {
+            "code": "LOF",
+            "name": "Local Overnight Flyer",
+            "description": "LOF description",
+            "type": "express",
+            "delivery_type": "door",
+            "collection_cut_off_time": "15:00:00",
+            "service_level_days": null
+          },
+          "rate_amount": 253.13,
+          "rate_amount_excl_vat": 220.11,
+          "charged_weight_kg": 5,
+          "status": "success",
+          "failed_reason": null,
+          "pickup_point_location_id": null
+        },
+        {
+          "service_level_code": "LSE",
+          "service_level": {
+            "code": "LSE",
+            "name": "Local Same Day Economy",
+            "description": "LSE description",
+            "type": "economy",
+            "delivery_type": "door",
+            "collection_cut_off_time": "15:00:00",
+            "service_level_days": null
+          },
+          "rate_amount": 302.5,
+          "rate_amount_excl_vat": 263.04,
+          "charged_weight_kg": 5,
+          "status": "success",
+          "failed_reason": null,
+          "pickup_point_location_id": null
+        },
+        {
+          "service_level_code": "LSX",
+          "service_level": {
+            "code": "LSX",
+            "name": "Local Same Day Express",
+            "description": "Collection sameday after 08:00 but before 15:00, delivery within 90 minutes",
+            "type": "express",
+            "delivery_type": "door",
+            "collection_cut_off_time": "15:00:00",
+            "service_level_days": null
+          },
+          "rate_amount": 837.5,
+          "rate_amount_excl_vat": 728.26,
+          "charged_weight_kg": 5,
+          "status": "success",
+          "failed_reason": null,
+          "pickup_point_location_id": null
+        }
+      ]
+    }
+  ],
+  "request_timeout": null,
+  "pickup_point_location_id": null
+}
